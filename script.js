@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const messageInput = document.getElementById('message-input');
     const chatMessages = document.getElementById('chat-messages');
     const sendButton = document.getElementById('send-button');
+    const chatWindow = document.getElementById('chat-window'); //
 
     // ===============================================================================
     // COLE A URL DA SUA CLOUD FUNCTION AQUI
@@ -78,4 +79,5 @@ document.addEventListener('DOMContentLoaded', () => {
     function scrollToBottom() {
         chatWindow.scrollTop = chatWindow.scrollHeight;
     }
+
 });
