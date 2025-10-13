@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supervisor de Mídia AI</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="chat-container">
+        <div id="header">Análise de Campanha Natura Tododia</div>
+        <div id="chat-window">
+            <div id="chat-messages">
+                <div class="message bot-message">
+                    Olá! Sou seu supervisor de mídia virtual. Como posso ajudar na análise da campanha Natura Tododia Energia hoje?
+                </div>
+            </div>
+        </div>
+        <div id="input-area">
+            <form id="chat-form">
+                <input type="text" id="message-input" placeholder="Faça uma pergunta..." autocomplete="off" required>
+                <button type="submit" id="send-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
