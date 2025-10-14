@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ===============================================================================
     // COLE A URL DA SUA CLOUD FUNCTION AQUI
-    const CLOUD_FUNCTION_URL = 'https://southamerica-east1-africa-br.cloudfunctions.net/chatbot-supervisor-midia-bq';
+    const CLOUD_FUNCTION_URL = 'https://southamerica-east1-africa-br.cloudfunctions.net/conversational-analytics-api';
     // ===============================================================================
 
     chatForm.addEventListener('submit', async (e) => {
@@ -81,3 +81,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 });
+
