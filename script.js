@@ -1,14 +1,13 @@
+// Arquivo: script.js (Versão final com suporte a Streaming)
+
 document.addEventListener('DOMContentLoaded', () => {
     const chatForm = document.getElementById('chat-form');
     const messageInput = document.getElementById('message-input');
     const chatMessages = document.getElementById('chat-messages');
     const sendButton = document.getElementById('send-button');
-    const chatWindow = document.getElementById('chat-window'); //
+    const chatWindow = document.getElementById('chat-window');
 
-    // ===============================================================================
-    // COLE A URL DA SUA CLOUD FUNCTION AQUI
     const CLOUD_FUNCTION_URL = 'https://southamerica-east1-africa-br.cloudfunctions.net/conversational-analytics-api';
-    // ===============================================================================
 
     chatForm.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -17,10 +16,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         addMessageToUI(userMessage, 'user');
         messageInput.value = '';
-        toggleInput(true); // Desabilita o input
+        toggleInput(true);
 
-        // Adiciona um loader para indicar que o bot está "pensando"
-        const loader = addLoaderToUI();
+        const botMessageElement = createBotMessageElement();
 
         try {
             const response = await fetch(CLOUD_FUNCTION_URL, {
@@ -30,55 +28,58 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || 'Ocorreu um erro na API.');
+                const errorText = await response.text();
+                throw new Error(`Erro na API: ${response.status} - ${errorText}`);
             }
+            
+            // Lógica de leitura do stream
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder();
+            let fullResponse = '';
 
-            const data = await response.json();
-            // Remove o loader e adiciona a resposta final do bot
-            updateBotMessage(loader, data.response);
+            while (true) {
+                const { value, done } = await reader.read();
+                if (done) break;
+                
+                const chunk = decoder.decode(value);
+                fullResponse += chunk;
+                
+                botMessageElement.innerHTML = marked.parse(fullResponse);
+                scrollToBottom();
+            }
 
         } catch (error) {
             console.error('Erro:', error);
-            updateBotMessage(loader, `**Desculpe, ocorreu um erro:**\n\n*${error.message}*`);
+            botMessageElement.innerHTML = `**Desculpe, ocorreu um erro:**\n\n*${error.message}*`;
         } finally {
-            toggleInput(false); // Reabilita o input
+            toggleInput(false);
         }
     });
 
     function toggleInput(disabled) {
         messageInput.disabled = disabled;
         sendButton.disabled = disabled;
+        if (!disabled) messageInput.focus();
     }
 
     function addMessageToUI(text, sender) {
         const messageElement = document.createElement('div');
         messageElement.classList.add('message', `${sender}-message`);
-        // Usamos a biblioteca 'marked' para renderizar o texto como Markdown
         messageElement.innerHTML = marked.parse(text);
         chatMessages.appendChild(messageElement);
         scrollToBottom();
     }
     
-    function addLoaderToUI() {
-        const loaderElement = document.createElement('div');
-        loaderElement.classList.add('message', 'bot-message', 'loader');
-        loaderElement.innerHTML = '<span></span><span></span><span></span>';
-        chatMessages.appendChild(loaderElement);
+    function createBotMessageElement() {
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('message', 'bot-message');
+        messageElement.innerHTML = '<span class="typing-cursor"></span>';
+        chatMessages.appendChild(messageElement);
         scrollToBottom();
-        return loaderElement;
-    }
-
-    function updateBotMessage(elementToUpdate, newText) {
-        elementToUpdate.classList.remove('loader');
-        // Renderiza o texto final como Markdown
-        elementToUpdate.innerHTML = marked.parse(newText);
-        scrollToBottom();
+        return messageElement;
     }
 
     function scrollToBottom() {
         chatWindow.scrollTop = chatWindow.scrollHeight;
     }
-
 });
-
