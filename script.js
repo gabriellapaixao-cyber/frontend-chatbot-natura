@@ -1,4 +1,4 @@
-// Arquivo: script.js (Versão final com suporte a Streaming)
+// Arquivo: script.js (Versão final estável, SEM streaming)
 
 document.addEventListener('DOMContentLoaded', () => {
     const chatForm = document.getElementById('chat-form');
@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const sendButton = document.getElementById('send-button');
     const chatWindow = document.getElementById('chat-window');
 
+    // IMPORTANTE: Garanta que esta URL é a da sua função ativa
     const CLOUD_FUNCTION_URL = 'https://southamerica-east1-africa-br.cloudfunctions.net/conversational-analytics-api';
 
     chatForm.addEventListener('submit', async (e) => {
@@ -18,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
         messageInput.value = '';
         toggleInput(true);
 
-        const botMessageElement = createBotMessageElement();
+        const loader = addLoaderToUI();
 
         try {
             const response = await fetch(CLOUD_FUNCTION_URL, {
@@ -28,29 +29,17 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`Erro na API: ${response.status} - ${errorText}`);
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Ocorreu um erro na API.');
             }
-            
-            // Lógica de leitura do stream
-            const reader = response.body.getReader();
-            const decoder = new TextDecoder();
-            let fullResponse = '';
 
-            while (true) {
-                const { value, done } = await reader.read();
-                if (done) break;
-                
-                const chunk = decoder.decode(value);
-                fullResponse += chunk;
-                
-                botMessageElement.innerHTML = marked.parse(fullResponse);
-                scrollToBottom();
-            }
+            // <<< MUDANÇA: Voltamos a esperar o JSON completo >>>
+            const data = await response.json();
+            updateBotMessage(loader, data.response);
 
         } catch (error) {
             console.error('Erro:', error);
-            botMessageElement.innerHTML = `**Desculpe, ocorreu um erro:**\n\n*${error.message}*`;
+            updateBotMessage(loader, `**Desculpe, ocorreu um erro:**\n\n*${error.message}*`);
         } finally {
             toggleInput(false);
         }
@@ -70,13 +59,19 @@ document.addEventListener('DOMContentLoaded', () => {
         scrollToBottom();
     }
     
-    function createBotMessageElement() {
-        const messageElement = document.createElement('div');
-        messageElement.classList.add('message', 'bot-message');
-        messageElement.innerHTML = '<span class="typing-cursor"></span>';
-        chatMessages.appendChild(messageElement);
+    function addLoaderToUI() {
+        const loaderElement = document.createElement('div');
+        loaderElement.classList.add('message', 'bot-message', 'loader');
+        loaderElement.innerHTML = '<span></span><span></span><span></span>';
+        chatMessages.appendChild(loaderElement);
         scrollToBottom();
-        return messageElement;
+        return loaderElement;
+    }
+
+    function updateBotMessage(elementToUpdate, newText) {
+        elementToUpdate.classList.remove('loader');
+        elementToUpdate.innerHTML = marked.parse(newText);
+        scrollToBottom();
     }
 
     function scrollToBottom() {
