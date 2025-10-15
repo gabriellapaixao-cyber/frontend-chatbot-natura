@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatWindow = document.getElementById('chat-window');
 
     // IMPORTANTE: Garanta que esta URL é a da sua função ativa
-    const CLOUD_FUNCTION_URL = 'https://southamerica-east1-africa-br.cloudfunctions.net/conversational-analytics-api';
+    const CLOUD_FUNCTION_URL = 'https://conversational-analytics-api-utls6vdlga-rj.a.run.app/';
 
     chatForm.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -78,3 +78,4 @@ document.addEventListener('DOMContentLoaded', () => {
         chatWindow.scrollTop = chatWindow.scrollHeight;
     }
 });
+
