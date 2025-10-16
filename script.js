@@ -9,32 +9,44 @@ document.addEventListener('DOMContentLoaded', () => {
     const userInput = document.getElementById('userInput');
     const sendBtn = document.getElementById('sendBtn');
 
+    // <<< NOVA FUNÇÃO: Converte Markdown básico para HTML >>>
+    function parseMarkdown(text) {
+        // Converte **negrito** para <strong>negrito</strong>
+        text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        // Adicione outras regras se necessário (ex: *itálico*)
+        return text;
+    }
+
     // Função para adicionar uma mensagem à caixa de chat
     function addMessage(text, sender) {
         const messageElement = document.createElement('div');
         messageElement.classList.add('message', sender === 'user' ? 'user-message' : 'bot-message');
-        messageElement.textContent = text;
+        
+        // <<< MUDANÇA: Usa innerHTML para renderizar a formatação >>>
+        // A mensagem do utilizador não precisa de parser, a do bot sim.
+        if (sender === 'user') {
+            messageElement.textContent = text;
+        } else {
+            messageElement.innerHTML = parseMarkdown(text);
+        }
+        
         chatBox.appendChild(messageElement);
         // Rola a caixa de chat para a última mensagem
         chatBox.scrollTop = chatBox.scrollHeight;
-        return messageElement; // Retorna o elemento para possível atualização (ex: "carregando...")
+        return messageElement;
     }
 
-    // Função principal para enviar a pergunta do usuário
+    // Função principal para enviar a pergunta do utilizador
     async function handleSendMessage() {
         const userText = userInput.value.trim();
         if (userText === '') return;
 
-        // Adiciona a mensagem do usuário à interface
         addMessage(userText, 'user');
-        // Limpa o campo de input
         userInput.value = '';
 
-        // Mostra uma mensagem de "carregando..."
         const loadingMessage = addMessage('Analisando...', 'bot');
 
         try {
-            // Faz a chamada para a sua Cloud Function
             const response = await fetch(API_URL, {
                 method: 'POST',
                 headers: {
@@ -48,27 +60,22 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const data = await response.json();
-            // Atualiza a mensagem de "carregando..." com a resposta real do bot
-            loadingMessage.textContent = data.response;
+            // <<< MUDANÇA: Atualiza a mensagem de "carregando" usando innerHTML e o parser >>>
+            loadingMessage.innerHTML = parseMarkdown(data.response);
 
         } catch (error) {
             console.error('Erro ao chamar a API:', error);
-            // Atualiza a mensagem de "carregando..." com uma mensagem de erro
             loadingMessage.textContent = 'Desculpe, ocorreu um erro ao tentar obter a resposta.';
         }
     }
 
-    // Adiciona o evento de clique ao botão de enviar
     sendBtn.addEventListener('click', handleSendMessage);
-
-    // Adiciona o evento de pressionar "Enter" no campo de input
     userInput.addEventListener('keypress', (event) => {
         if (event.key === 'Enter') {
             handleSendMessage();
         }
     });
 
-    // Adiciona uma mensagem de boas-vindas inicial
-    addMessage('Olá! Como posso ajudar na análise de campanhas Natura hoje?', 'bot');
+    addMessage('Olá! Como posso ajudar na análise da campanha Natura Tododia Energia hoje?', 'bot');
 });
 
