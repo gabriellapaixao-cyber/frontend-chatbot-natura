@@ -69,5 +69,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Adiciona uma mensagem de boas-vindas inicial
-    addMessage('Olá! Como posso ajudar na análise da campanha Natura Tododia Energia hoje?', 'bot');
+    addMessage('Olá! Como posso ajudar na análise de campanhas Natura hoje?', 'bot');
 });
+
