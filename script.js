@@ -9,11 +9,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const userInput = document.getElementById('userInput');
     const sendBtn = document.getElementById('sendBtn');
 
-    // <<< NOVA FUNÇÃO: Converte Markdown básico para HTML >>>
+    // <<< FUNÇÃO APRIMORADA: Converte Markdown completo para HTML >>>
     function parseMarkdown(text) {
         // Converte **negrito** para <strong>negrito</strong>
         text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-        // Adicione outras regras se necessário (ex: *itálico*)
+        
+        // Converte listas com marcadores (-) para <ul> e <li>
+        // Primeiro, envolve os itens da lista em <li>
+        text = text.replace(/^\s*-\s+(.*)$/gm, '<li>$1</li>');
+        // Depois, envolve os blocos de <li> em <ul>
+        text = text.replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>');
+        // Corrige o problema de criar múltiplos <ul> para uma única lista
+        text = text.replace(/<\/ul>\s*<ul>/g, '');
+
+        // Converte quebras de linha em <br> para manter os parágrafos
+        text = text.replace(/\n/g, '<br>');
+
         return text;
     }
 
@@ -22,8 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const messageElement = document.createElement('div');
         messageElement.classList.add('message', sender === 'user' ? 'user-message' : 'bot-message');
         
-        // <<< MUDANÇA: Usa innerHTML para renderizar a formatação >>>
-        // A mensagem do utilizador não precisa de parser, a do bot sim.
+        // Usa innerHTML para renderizar a formatação
         if (sender === 'user') {
             messageElement.textContent = text;
         } else {
@@ -60,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const data = await response.json();
-            // <<< MUDANÇA: Atualiza a mensagem de "carregando" usando innerHTML e o parser >>>
+            // Atualiza a mensagem de "carregando" usando innerHTML e o parser
             loadingMessage.innerHTML = parseMarkdown(data.response);
 
         } catch (error) {
