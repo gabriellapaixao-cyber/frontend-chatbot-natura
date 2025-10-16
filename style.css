@@ -1,6 +1,6 @@
 /* Definindo a paleta de cores e fontes em variáveis para fácil manutenção */
 :root {
-    --omni-blue: #006a98;   /* COR ATUALIZADA - Azul principal do Omni */
+    --omni-blue: #00B2D6;   /* COR ATUALIZADA - Azul claro do logo Omni */
     --user-blue: #007AFF;   /* Azul para a bolha do usuário */
     --bg-light-gray: #F7F8FA; /* Fundo principal da página */
     --container-bg: #FFFFFF; /* Fundo do container do chat */
@@ -123,6 +123,6 @@ body {
 }
 
 #sendBtn:hover {
-    background-color: #005d85; /* COR ATUALIZADA - Tom mais escuro da paleta Omni */
+    background-color: #0099B8; /* COR ATUALIZADA - Tom mais escuro do azul claro */
 }
 
