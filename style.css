@@ -1,7 +1,7 @@
 /* Definindo a paleta de cores e fontes em variáveis para fácil manutenção */
 :root {
-    --omni-blue: #00B2D6;   /* COR ATUALIZADA - Azul claro do logo Omni */
-    --user-blue: #007AFF;   /* Azul para a bolha do usuário */
+    --omni-blue: #00B2D6;   /* Azul claro do logo Omni */
+    --user-blue: #007AFF;   /* Azul para a bolha do utilizador */
     --bg-light-gray: #F7F8FA; /* Fundo principal da página */
     --container-bg: #FFFFFF; /* Fundo do container do chat */
     --bot-bubble-bg: #E9E9EB; /* Fundo da bolha de resposta do bot */
@@ -77,7 +77,7 @@ body {
     border-bottom-left-radius: 4px;
 }
 
-/* Bolha de pergunta do usuário (à direita) */
+/* Bolha de pergunta do utilizador (à direita) */
 .user-message {
     background-color: var(--user-blue);
     color: white;
@@ -123,6 +123,12 @@ body {
 }
 
 #sendBtn:hover {
-    background-color: #0099B8; /* COR ATUALIZADA - Tom mais escuro do azul claro */
+    background-color: #0099B8; /* Tom mais escuro do azul claro */
+}
+
+/* <<< NOVA REGRA: Estiliza o texto em negrito para ficar colorido >>> */
+.bot-message strong {
+    color: #005d85; /* Um azul mais escuro da paleta Omni para bom contraste */
+    font-weight: 700;
 }
 
