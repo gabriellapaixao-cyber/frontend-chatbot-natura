@@ -1,6 +1,6 @@
 /* Definindo a paleta de cores e fontes em variáveis para fácil manutenção */
 :root {
-    --omni-blue: #2A64F5;   /* Azul do header e botão, inspirado no Omni */
+    --omni-blue: #006a98;   /* COR ATUALIZADA - Azul principal do Omni */
     --user-blue: #007AFF;   /* Azul para a bolha do usuário */
     --bg-light-gray: #F7F8FA; /* Fundo principal da página */
     --container-bg: #FFFFFF; /* Fundo do container do chat */
@@ -38,7 +38,7 @@ body {
 
 /* Header do chat */
 .chat-header {
-    background-color: var(--omni-blue); /* COR ALTERADA */
+    background-color: var(--omni-blue);
     color: white;
     padding: 16px 20px;
     text-align: center;
@@ -109,7 +109,7 @@ body {
 }
 
 #sendBtn {
-    background-color: var(--omni-blue); /* COR ALTERADA */
+    background-color: var(--omni-blue);
     color: white;
     border: none;
     border-radius: 50%;
@@ -123,5 +123,6 @@ body {
 }
 
 #sendBtn:hover {
-    background-color: #2450D1; /* Um tom de azul mais escuro para o hover */
+    background-color: #005d85; /* COR ATUALIZADA - Tom mais escuro da paleta Omni */
 }
+
