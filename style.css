@@ -25,9 +25,9 @@ body {
 
 /* Container principal do chat */
 .chat-container {
-    width: 450px;
-    height: 80vh;
-    max-height: 700px;
+    width: 600px; /* Aumentado de 450px */
+    height: 90vh; /* Aumentado de 80vh */
+    max-height: 850px; /* Aumentado de 700px */
     background-color: var(--container-bg);
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
