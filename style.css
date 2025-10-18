@@ -1,14 +1,16 @@
 /* Definindo a paleta de cores e fontes em variáveis para fácil manutenção */
 :root {
-    --omni-blue: #00B2D6;   /* Azul claro do logo Omni */
-    --user-blue: #007AFF;   /* Azul para a bolha do utilizador */
+    --natura-orange-header: #FF7F00; /* Laranja vibrante para o header e botão */
+    --natura-orange-hover: #E67300;  /* Laranja um pouco mais escuro para o hover */
+    --user-orange-bubble: #FB8C00; /* Novo tom de laranja para a bolha do utilizador */
     --bg-light-gray: #F7F8FA; /* Fundo principal da página */
     --container-bg: #FFFFFF; /* Fundo do container do chat */
-    --bot-bubble-bg: #E9E9EB; /* Fundo da bolha de resposta do bot */
+    --bot-bubble-bg: #F0F2F5; /* Fundo da bolha de resposta do bot */
     --text-dark: #2D3748;     /* Cor principal do texto */
     --text-light: #6C757D;    /* Cor para placeholders e textos secundários */
     --border-color: #E2E8F0;  /* Cor das bordas */
     --main-font: 'Inter', sans-serif; /* Fonte padrão */
+    --natura-orange-strong: #FF5722; /* Laranja mais intenso para o negrito no bot */
 }
 
 /* Estilos gerais do corpo da página */
@@ -25,9 +27,9 @@ body {
 
 /* Container principal do chat */
 .chat-container {
-    width: 600px; /* Aumentado de 450px */
-    height: 90vh; /* Aumentado de 80vh */
-    max-height: 850px; /* Aumentado de 700px */
+    width: 600px;
+    height: 90vh;
+    max-height: 850px;
     background-color: var(--container-bg);
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
@@ -38,7 +40,7 @@ body {
 
 /* Header do chat */
 .chat-header {
-    background-color: var(--omni-blue);
+    background-color: var(--natura-orange-header);
     color: white;
     padding: 16px 20px;
     text-align: center;
@@ -79,7 +81,7 @@ body {
 
 /* Bolha de pergunta do utilizador (à direita) */
 .user-message {
-    background-color: var(--user-blue);
+    background-color: var(--user-orange-bubble); /* MUDANÇA: Agora usa o tom de laranja */
     color: white;
     align-self: flex-end;
     border-bottom-right-radius: 4px;
@@ -105,11 +107,11 @@ body {
 
 #userInput:focus {
     outline: none;
-    border-color: var(--user-blue);
+    border-color: var(--natura-orange-header); /* Foco com a cor laranja */
 }
 
 #sendBtn {
-    background-color: var(--omni-blue);
+    background-color: var(--natura-orange-header);
     color: white;
     border: none;
     border-radius: 50%;
@@ -123,12 +125,12 @@ body {
 }
 
 #sendBtn:hover {
-    background-color: #0099B8; /* Tom mais escuro do azul claro */
+    background-color: var(--natura-orange-hover);
 }
 
-/* <<< NOVA REGRA: Estiliza o texto em negrito para ficar colorido >>> */
+/* Estiliza o texto em negrito para ficar colorido */
 .bot-message strong {
-    color: #005d85; /* Um azul mais escuro da paleta Omni para bom contraste */
+    color: var(--natura-orange-strong);
     font-weight: 700;
 }
 
